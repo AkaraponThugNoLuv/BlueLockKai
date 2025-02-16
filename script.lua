@@ -32,12 +32,12 @@ local function sendWebhook(styleValue)
     local data = {
         ["username"] = "น้องยูไก่ Blue Lock",
         ["avatar_url"] = "https://img2.pic.in.th/pic/img-LFvxXRln1rNDhoAwznTyKf8f40159bfebcc49.jpeg",
-        ["content"] = "ไก่สไตล์แดงครับไอ้โง่",  -- Tag ผู้เล่นใน Discord
+        ["content"] = "<@" .. "387914271943557130" .. ">",  -- Tag ผู้เล่นใน Discord
         ["embeds"] = {
             {
                 ["title"] = "แจ้งเตือนสุ่ม Style",
                 ["description"] = "**ชื่อตัวละคร** ||" .. player.Name .. "|| ได้รับสไตล์: " .. styleValue,
-                ["color"] = 0xFF0000,  -- สีของ Embed (Green)
+                ["color"] = 0xff0000,  -- สีของ Embed (Green)
                 ["image"] = {
                     ["url"] = "https://media.discordapp.net/attachments/1285600624666476605/1340717423338197174/13c48f8c1fa28ec3cc188f1e639ad2b8.gif?ex=67b35fe7&is=67b20e67&hm=2179ac729f769fe2d8a16fdf69ed6acade6a0215268c93bc972ca6650ae96f61&="
                 },
@@ -96,7 +96,14 @@ local function checkStyle()
                 saveToConfig(config)
 
                 -- ส่ง Webhook
-                sendWebhook(styleValue)
+                local success = sendWebhook(styleValue)
+                if success then
+                    -- เตะผู้เล่นหลังจากส่ง Webhook สำเร็จ
+                    player:Kick("คุณได้รับสไตล์ " .. styleValue .. " แล้ว ")
+                end
+            else
+                -- ถ้าเคยส่ง Webhook ไปแล้ว ให้เตะผู้เล่น
+                player:Kick("คุณเคยได้รับสไตล์นี้แล้ว และถูกเตะออกจากเกม")
             end
         end
     end
