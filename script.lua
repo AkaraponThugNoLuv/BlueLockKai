@@ -15,7 +15,7 @@ if player:FindFirstChild("PlayerStats") and player.PlayerStats:FindFirstChild("S
         local data = {
             ["username"] = "น้องยูไก่ Blue Lock",
             ["avatar_url"] = "https://img2.pic.in.th/pic/img-LFvxXRln1rNDhoAwznTyKf8f40159bfebcc49.jpeg",
-            ["content"] = "<@" .. "387914271943557130" .. ">",  -- Tag ผู้เล่นใน Discord (สามารถใช้ UserId แทน)
+            ["content"] = "ไก่มึงสุ่มได้สไตล์แดงครับไอ้โง่",  -- Tag ผู้เล่นใน Discord (สามารถใช้ UserId แทน)
             ["embeds"] = {
                 {
                     ["title"] = "แจ้งเตือนสุ่ม Style",  -- ชื่อของ Embed
