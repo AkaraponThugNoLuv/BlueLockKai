@@ -4,7 +4,7 @@ local player = game.Players.LocalPlayer
 
 if player:FindFirstChild("PlayerStats") and player.PlayerStats:FindFirstChild("Style") then
     local styleValue = player.PlayerStats.Style
-    local styleneed = {"Rin", "Aiku", "Shidou", "Sae","Kunigami","Yukimiya",} 
+    local styleneed = {"Rin", "Aiku", "Shidou", "Sae","Kunigami","Yukimiya"} 
 
     if table.find(styleneed, styleValue.Value) then
         local url = _G.DiscordWebhookUrl
