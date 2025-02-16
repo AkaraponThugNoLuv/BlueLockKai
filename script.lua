@@ -1,8 +1,6 @@
 local HttpService = game:GetService("HttpService")
 local player = game.Players.LocalPlayer
 
--- ตั้งค่า Webhook URL
-_G.DiscordWebhookUrl = "https://ptb.discord.com/api/webhooks/1285604618973220897/HUclFVbuquOuxD9iZgBHq-lGKxzWuUCpXqAljvB-ctWRpubJGAvu0jlaUtA0mFKtbgsg"
 
 -- ฟังก์ชันสำหรับบันทึกข้อมูลลงในไฟล์ JSON
 local function saveToConfig(data)
