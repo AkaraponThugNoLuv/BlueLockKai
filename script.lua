@@ -4,7 +4,7 @@ local player = game.Players.LocalPlayer
 -- ตรวจสอบว่าผู้เล่นมี PlayerStats และ Style
 if player:FindFirstChild("PlayerStats") and player.PlayerStats:FindFirstChild("Style") then
     local styleValue = player.PlayerStats.Style
-    local styleneed = {"Rin", "Aiku", "Shidou", "Sae","Kunigami","Yukimiya"}  -- ค่า Style ที่ต้องการตรวจสอบ
+    local styleneed = {"Rin", "Aiku", "Shidou", "Sae","Kunigami","Yukimiya","Isagi"}  -- ค่า Style ที่ต้องการตรวจสอบ
 
     -- ตรวจสอบว่า styleValue เป็นค่าที่ต้องการหรือไม่
     if table.find(styleneed, styleValue.Value) then
