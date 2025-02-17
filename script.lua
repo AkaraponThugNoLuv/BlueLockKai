@@ -32,7 +32,7 @@ local function sendWebhook(styleValue)
     local data = {
         ["username"] = "น้องยูไก่ Blue Lock",
         ["avatar_url"] = "https://img2.pic.in.th/pic/img-LFvxXRln1rNDhoAwznTyKf8f40159bfebcc49.jpeg",
-        ["content"] = "ไก่มึงได้สไตล์แดงครับไอ้โง่",  -- Tag ผู้เล่นใน Discord
+        ["content"] = "<@" .. "387914271943557130" .. ">",  -- Tag ผู้เล่นใน Discord
         ["embeds"] = {
             {
                 ["title"] = "แจ้งเตือนสุ่ม Style",
