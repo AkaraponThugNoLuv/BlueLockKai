@@ -35,10 +35,10 @@ local function sendWebhook(styleValue, flowValue)
         ["embeds"] = {
             {
                 ["title"] = "แจ้งเตือนสุ่ม Style",
-                ["description"] = "**ชื่อตัวละคร**||".. player.Name .."||ได้รับสไตล์:" .. styleValue .. " และ Flow: " .. flowValue,
+                ["description"] = "**ชื่อตัวละคร**||".. player.Name .."||\nได้รับStyle: " .. styleValue .. "\nได้รับFlow: " .. flowValue,
                 ["color"] = 0xff0000,
                 ["image"] = {
-                    ["url"] = "https://media.discordapp.net/attachments/1285600624666476605/1340717423338197174/13c48f8c1fa28ec3cc188f1e639ad2b8.gif"
+                    ["url"] = "https://media.discordapp.net/attachments/1285600624666476605/1342194431452905502/blue-lock-itoshi-sae.gif?ex=67b8bf79&is=67b76df9&hm=04bf97ec15a70a5a9698f91c967d415cf63263d957ab0c9ab432c570b5009d58&="
                 }
             }
         }
