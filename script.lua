@@ -31,11 +31,11 @@ local function sendWebhook(styleValue, flowValue)
     local data = {
         ["username"] = "น้องยูไก่ Blue Lock",
         ["avatar_url"] = "https://img2.pic.in.th/pic/img-LFvxXRln1rNDhoAwznTyKf8f40159bfebcc49.jpeg",
-        ["content"] = "<@" .. "387914271943557130" .. ">",
+        ["content"] = "<@" .. "387914271943557130" .. "> ชื่อPC: ".._G.PC ,
         ["embeds"] = {
             {
                 ["title"] = "แจ้งเตือนสุ่ม Style",
-                ["description"] = "**ชื่อตัวละคร**||".. player.Name .."||\nได้รับStyle: " .. styleValue .. "\nได้รับFlow: " .. flowValue,
+                ["description"] = "**ชื่อตัวละคร: **||".. player.Name .."||\n**ได้รับStyle:** " .. styleValue .. "\n**ได้รับFlow:** " .. flowValue,
                 ["color"] = 0xff0000,
                 ["image"] = {
                     ["url"] = "https://media.discordapp.net/attachments/1285600624666476605/1342194431452905502/blue-lock-itoshi-sae.gif?ex=67b8bf79&is=67b76df9&hm=04bf97ec15a70a5a9698f91c967d415cf63263d957ab0c9ab432c570b5009d58&="
