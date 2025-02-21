@@ -1,7 +1,6 @@
 local HttpService = game:GetService("HttpService")
 local player = game.Players.LocalPlayer
 
-
 -- ฟังก์ชันสำหรับบันทึกข้อมูลลงในไฟล์ JSON
 local function saveToConfig(data)
     local configPath = "config.json"
@@ -28,19 +27,19 @@ local function loadFromConfig()
 end
 
 -- ฟังก์ชันสำหรับส่ง Webhook
-local function sendWebhook(styleValue)
+local function sendWebhook(styleValue, flowValue)
     local data = {
         ["username"] = "น้องยูไก่ Blue Lock",
         ["avatar_url"] = "https://img2.pic.in.th/pic/img-LFvxXRln1rNDhoAwznTyKf8f40159bfebcc49.jpeg",
-        ["content"] = "<@" .. "387914271943557130" .. ">ชื่อPC: ".._G.PC ,  -- Tag ผู้เล่นใน Discord
+        ["content"] = "<@" .. "387914271943557130" .. "> ชื่อPC: ".._G.PC ,
         ["embeds"] = {
             {
                 ["title"] = "แจ้งเตือนสุ่ม Style",
-                ["description"] = "**ชื่อตัวละคร** ||" .. player.Name .."|| ได้รับสไตล์: " .. styleValue,
-                ["color"] = 0xff0000,  -- สีของ Embed (Green)
+                ["description"] = "**ชื่อตัวละคร: **||".. player.Name .."||\n**ได้รับStyle:** " .. styleValue .. "\n**ได้รับFlow:** " .. flowValue,
+                ["color"] = 0xff0000,
                 ["image"] = {
-                    ["url"] = "https://media.discordapp.net/attachments/1285600624666476605/1340717423338197174/13c48f8c1fa28ec3cc188f1e639ad2b8.gif?ex=67b35fe7&is=67b20e67&hm=2179ac729f769fe2d8a16fdf69ed6acade6a0215268c93bc972ca6650ae96f61&="
-                },
+                    ["url"] = "https://media.discordapp.net/attachments/1285600624666476605/1342194431452905502/blue-lock-itoshi-sae.gif?ex=67b8bf79&is=67b76df9&hm=04bf97ec15a70a5a9698f91c967d415cf63263d957ab0c9ab432c570b5009d58&="
+                }
             }
         }
     }
@@ -79,31 +78,39 @@ end
 
 -- ตรวจสอบและดำเนินการ
 local function checkStyle()
-    if player:FindFirstChild("PlayerStats") and player.PlayerStats:FindFirstChild("Style") then
-        local styleValue = player.PlayerStats.Style.Value
-        local styleneed = {"Kunigami"}
+    if player:FindFirstChild("PlayerStats") then
+        local stats = player.PlayerStats
+        if stats:FindFirstChild("Style") and stats:FindFirstChild("Flow") then
+            local styleValue = stats.Style.Value
+            local flowValue = stats.Flow.Value
+            
+            local styleNeed = {"Rin", "Aiku", "Shidou", "Sae", "Kunigami", "Yukimiya"}
+            local flowNeed = {"Dribbler", "Awakened Genius", "Prodigy", "Snake"}
+            
+            -- ตรวจสอบว่า Style และ Flow เป็นค่าที่ต้องการหรือไม่
+            if table.find(styleNeed, styleValue) and table.find(flowNeed, flowValue) then
+                -- โหลดข้อมูลจากไฟล์ config
+                local config = loadFromConfig() or {}
+                local lastStyle = config.lastStyle
+                local lastFlow = config.lastFlow
 
-        -- ตรวจสอบว่า styleValue เป็นค่าที่ต้องการหรือไม่
-        if table.find(styleneed, styleValue) then
-            -- โหลดข้อมูลจากไฟล์ config
-            local config = loadFromConfig() or {}
-            local lastStyle = config.lastStyle
+                -- ถ้า styleValue หรือ flowValue เปลี่ยนและยังไม่เคยส่ง Webhook
+                if lastStyle ~= styleValue or lastFlow ~= flowValue then
+                    -- บันทึกค่าใหม่ลงในไฟล์ config
+                    config.lastStyle = styleValue
+                    config.lastFlow = flowValue
+                    saveToConfig(config)
 
-            -- ถ้า styleValue เปลี่ยนและยังไม่เคยส่ง Webhook
-            if lastStyle ~= styleValue then
-                -- บันทึกค่าใหม่ลงในไฟล์ config
-                config.lastStyle = styleValue
-                saveToConfig(config)
-
-                -- ส่ง Webhook
-                local success = sendWebhook(styleValue)
-                if success then
-                    -- เตะผู้เล่นหลังจากส่ง Webhook สำเร็จ
-                    player:Kick("คุณได้รับสไตล์ " .. styleValue .. " แล้ว ")
+                    -- ส่ง Webhook
+                    local success = sendWebhook(styleValue, flowValue)
+                    if success then
+                        -- เตะผู้เล่นหลังจากส่ง Webhook สำเร็จ
+                        player:Kick("คุณได้รับสไตล์ " .. styleValue .. " และ Flow " .. flowValue .. " แล้ว")
+                    end
+                else
+                    -- ถ้าเคยส่ง Webhook ไปแล้ว ให้เตะผู้เล่น
+                    player:Kick("คุณได้รับสไตล์ " .. styleValue .. " และ Flow " .. flowValue .. " แล้ว")
                 end
-            else
-                -- ถ้าเคยส่ง Webhook ไปแล้ว ให้เตะผู้เล่น
-                player:Kick("คุณได้รับสไตล์ " .. styleValue .. " แล้ว ")
             end
         end
     end
@@ -112,7 +119,12 @@ end
 -- เรียกฟังก์ชันตรวจสอบเมื่อเกมเริ่มต้น
 checkStyle()
 
--- ตรวจสอบทุกครั้งที่ Style เปลี่ยนแปลง
-if player:FindFirstChild("PlayerStats") and player.PlayerStats:FindFirstChild("Style") then
-    player.PlayerStats.Style.Changed:Connect(checkStyle)
+-- ตรวจสอบทุกครั้งที่ Style หรือ Flow เปลี่ยนแปลง
+if player:FindFirstChild("PlayerStats") then
+    if player.PlayerStats:FindFirstChild("Style") then
+        player.PlayerStats.Style.Changed:Connect(checkStyle)
+    end
+    if player.PlayerStats:FindFirstChild("Flow") then
+        player.PlayerStats.Flow.Changed:Connect(checkStyle)
+    end
 end
