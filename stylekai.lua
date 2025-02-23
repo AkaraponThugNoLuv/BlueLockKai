@@ -1,7 +1,5 @@
 local HttpService = game:GetService("HttpService")
 local player = game.Players.LocalPlayer
-
-
 -- ฟังก์ชันสำหรับบันทึกข้อมูลลงในไฟล์ JSON
 local function saveToConfig(data)
     local configPath = "config.json"
@@ -29,6 +27,10 @@ end
 
 -- ฟังก์ชันสำหรับส่ง Webhook
 local function sendWebhook(styleValue)
+    local money = game:GetService("Players").LocalPlayer.ProfileStats.Money.Value
+    local spins = game:GetService("Players").LocalPlayer.ProfileStats.Spins.Value
+    local flowSpins = game:GetService("Players").LocalPlayer.ProfileStats.FlowSpins.Value
+
     local data = {
         ["username"] = "น้องยูไก่ Blue Lock",
         ["avatar_url"] = "https://img2.pic.in.th/pic/img-LFvxXRln1rNDhoAwznTyKf8f40159bfebcc49.jpeg",
@@ -36,8 +38,11 @@ local function sendWebhook(styleValue)
         ["embeds"] = {
             {
                 ["title"] = "แจ้งเตือนสุ่ม Style",
-                ["description"] = "**ชื่อตัวละคร** ||\n".. player.Name .."\n|| ได้รับสไตล์: " .. styleValue,
-                ["color"] = 0xff0000,  -- สีของ Embed (Green)
+                ["description"] = "**Name** ||\n".. player.Name .."\n|| **Style : **" .. styleValue ..
+                                 "\n **Money :** " .. money ..
+                                 "\n **Spin:** : " .. spins ..
+                                 "\n **FlowSpin:** : " .. flowSpins,
+                ["color"] = 0xff0000,  -- สีของ Embed (Red)
                 ["image"] = {
                     ["url"] = "https://media.discordapp.net/attachments/1285600624666476605/1340717423338197174/13c48f8c1fa28ec3cc188f1e639ad2b8.gif?ex=67b35fe7&is=67b20e67&hm=2179ac729f769fe2d8a16fdf69ed6acade6a0215268c93bc972ca6650ae96f61&="
                 },
@@ -81,7 +86,7 @@ end
 local function checkStyle()
     if player:FindFirstChild("PlayerStats") and player.PlayerStats:FindFirstChild("Style") then
         local styleValue = player.PlayerStats.Style.Value
-        local styleneed = {"Rin","Shidou", "Sae", "Kunigami", "Yukimiya"}
+        local styleneed = {"Rin","Shidou", "Sae", "Kunigami", "Yukimiya","Isagi"}
 
         -- ตรวจสอบว่า styleValue เป็นค่าที่ต้องการหรือไม่
         if table.find(styleneed, styleValue) then
