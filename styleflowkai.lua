@@ -84,7 +84,7 @@ local function checkStyle()
             local styleValue = stats.Style.Value
             local flowValue = stats.Flow.Value
             
-            local styleNeed = {"Rin","Shidou", "Sae", "Kunigami", "Yukimiya"}
+            local styleNeed = {"Rin","Shidou", "Sae", "Kunigami", "Yukimiya","Aiku"}
             local flowNeed = {"Dribbler", "Awakened Genius", "Prodigy", "Snake"}
             
             -- ตรวจสอบว่า Style และ Flow เป็นค่าที่ต้องการหรือไม่
