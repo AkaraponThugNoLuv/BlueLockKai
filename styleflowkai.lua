@@ -38,7 +38,7 @@ local function sendWebhook(styleValue, flowValue)
                 ["description"] = "**ชื่อตัวละคร: **||".. player.Name .."||\n**ได้รับStyle:** " .. styleValue .. "\n**ได้รับFlow:** " .. flowValue,
                 ["color"] = 0xff0000,
                 ["image"] = {
-                    ["url"] = "https://media.discordapp.net/attachments/1285600624666476605/1342194431452905502/blue-lock-itoshi-sae.gif?ex=67b8bf79&is=67b76df9&hm=04bf97ec15a70a5a9698f91c967d415cf63263d957ab0c9ab432c570b5009d58&="
+                    ["url"] = "https://media.discordapp.net/attachments/1285600624666476605/1346492606393352313/hq720.png?ex=67c86275&is=67c710f5&hm=defa586ad25ed54e532f210db6e6841368f48e90e46cec536d17e9f33367fc73&=&format=webp&quality=lossless"
                 }
             }
         }
@@ -84,8 +84,8 @@ local function checkStyle()
             local styleValue = stats.Style.Value
             local flowValue = stats.Flow.Value
             
-            local styleNeed = {"Rin","Shidou", "Sae", "Kunigami", "Yukimiya","Aiku"}
-            local flowNeed = {"Dribbler", "Awakened Genius", "Prodigy", "Snake"}
+            local styleNeed = {"Don Lorenzo"}
+            local flowNeed = {"Soul Harvester"}
             
             -- ตรวจสอบว่า Style และ Flow เป็นค่าที่ต้องการหรือไม่
             if table.find(styleNeed, styleValue) and table.find(flowNeed, flowValue) then
