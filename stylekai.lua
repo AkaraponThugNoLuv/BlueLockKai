@@ -44,7 +44,7 @@ local function sendWebhook(styleValue)
                                  "\n **FlowSpin:** : " .. flowSpins,
                 ["color"] = 0xff0000,  -- สีของ Embed (Red)
                 ["image"] = {
-                    ["url"] = "https://media.discordapp.net/attachments/1285600624666476605/1340717423338197174/13c48f8c1fa28ec3cc188f1e639ad2b8.gif?ex=67b35fe7&is=67b20e67&hm=2179ac729f769fe2d8a16fdf69ed6acade6a0215268c93bc972ca6650ae96f61&="
+                    ["url"] = "https://media.discordapp.net/attachments/1285600624666476605/1346319254768844932/c27802c7-2c89-47d1-9f40-af365b3c1322.jpg?ex=67c7c103&is=67c66f83&hm=5821191cf5d8bc2c0cf2cde5f924702266ca766bb31b95a951ffc1ca70341c30&=&format=webp"
                 },
             }
         }
