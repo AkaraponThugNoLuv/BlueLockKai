@@ -84,8 +84,8 @@ local function checkStyle()
             local styleValue = stats.Style.Value
             local flowValue = stats.Flow.Value
             
-            local styleNeed = {"Sae","Don Lorenzo","Shidou","Yukimiya","Kunigami","Rin"}
-            local flowNeed = {"Prodigy","Soul Harvester","Dribbler","Awakened Genius"}
+            local styleNeed = {"Don Lorenzo"}
+            local flowNeed = {"Soul Harvester"}
             
             -- ตรวจสอบว่า Style และ Flow เป็นค่าที่ต้องการหรือไม่
             if table.find(styleNeed, styleValue) and table.find(flowNeed, flowValue) then
