@@ -62,7 +62,7 @@ if player.ProfileStats.Level.Value >= 10 then
                                          "\n **FlowSpin:** " .. flowSpins,
                         ["color"] = 0xff0000,
                         ["image"] = {
-                            ["url"] = "https://media.discordapp.net/attachments/1285600624666476605/1346319254768844932/c27802c7-2c89-47d1-9f40-af365b3c1322.jpg"
+                            ["url"] = "https://media.discordapp.net/attachments/1285600624666476605/1347718780578562058/1b3485bab8f021908244c6daea187de4.gif?ex=67ccd86c&is=67cb86ec&hm=679eba1bbf664ff5b81ae08e3db209dfefbe9f79d09672a83c39afb3cba36670&="
                         }
                     }
                 }
