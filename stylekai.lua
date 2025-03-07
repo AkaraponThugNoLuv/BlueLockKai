@@ -103,7 +103,7 @@ local function checkStyle()
                 -- ส่ง Webhook
                 local success = sendWebhook(styleValue)
                 if success then
-                    wait(30)
+                    wait(60)
                     -- เตะผู้เล่นหลังจากส่ง Webhook สำเร็จ
                     player:Kick("คุณได้รับสไตล์ " .. styleValue .. " แล้ว ")
                 end
