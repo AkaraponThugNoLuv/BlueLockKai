@@ -105,7 +105,7 @@ local function checkStyle()
                     local success = sendWebhook(styleValue, flowValue)
                     if success then
                         -- เตะผู้เล่นหลังจากส่ง Webhook สำเร็จ
-                        wait(30)
+                        wait(60)
                         player:Kick("คุณได้รับสไตล์ " .. styleValue .. " และ Flow " .. flowValue .. " แล้ว")
                     end
                 else
