@@ -86,7 +86,7 @@ end
 local function checkStyle()
     if player:FindFirstChild("PlayerStats") and player.PlayerStats:FindFirstChild("Style") then
         local styleValue = player.PlayerStats.Style.Value
-        local styleneed = {"Sae","Don Lorenzo","Yukimiya","Kunigami","Aiku","Rin"}
+        local styleneed = {"Sae","Don Lorenzo","Yukimiya","Kunigami","Aiku","Rin","Shidou"}
 
         -- ตรวจสอบว่า styleValue เป็นค่าที่ต้องการหรือไม่
         if table.find(styleneed, styleValue) then
