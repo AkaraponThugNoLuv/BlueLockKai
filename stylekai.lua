@@ -1,8 +1,9 @@
 local HttpService = game:GetService("HttpService")
 local player = game.Players.LocalPlayer
+local configPath = player.Name .. ".json" -- ใช้ชื่อผู้เล่นเป็นชื่อไฟล์
+
 -- ฟังก์ชันสำหรับบันทึกข้อมูลลงในไฟล์ JSON
 local function saveToConfig(data)
-    local configPath = "config.json"
     local success, encoded = pcall(HttpService.JSONEncode, HttpService, data)
     if success then
         writefile(configPath, encoded)
@@ -13,7 +14,6 @@ end
 
 -- ฟังก์ชันสำหรับโหลดข้อมูลจากไฟล์ JSON
 local function loadFromConfig()
-    local configPath = "config.json"
     if isfile(configPath) then
         local success, decoded = pcall(HttpService.JSONDecode, HttpService, readfile(configPath))
         if success then
@@ -27,14 +27,14 @@ end
 
 -- ฟังก์ชันสำหรับส่ง Webhook
 local function sendWebhook(styleValue)
-    local money = game:GetService("Players").LocalPlayer.ProfileStats.Money.Value
-    local spins = game:GetService("Players").LocalPlayer.ProfileStats.Spins.Value
-    local flowSpins = game:GetService("Players").LocalPlayer.ProfileStats.FlowSpins.Value
+    local money = player.ProfileStats.Money.Value
+    local spins = player.ProfileStats.Spins.Value
+    local flowSpins = player.ProfileStats.FlowSpins.Value
 
     local data = {
         ["username"] = "น้องยูไก่ Blue Lock",
         ["avatar_url"] = "https://img2.pic.in.th/pic/img-LFvxXRln1rNDhoAwznTyKf8f40159bfebcc49.jpeg",
-        ["content"] = "<@" .. "387914271943557130" .. "> ชื่อPC: ".._G.PC ,  -- Tag ผู้เล่นใน Discord
+        ["content"] = "<@" .. "387914271943557130" .. "> ชื่อPC: ".._G.PC,  -- Tag ผู้เล่นใน Discord
         ["embeds"] = {
             {
                 ["title"] = "แจ้งเตือนสุ่ม Style",
