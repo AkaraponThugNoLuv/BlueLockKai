@@ -27,7 +27,7 @@ end
 
 while true do
     wait(5) -- ตรวจสอบทุก 5 วินาที
-    if player.ProfileStats.Level.Value >= 10 then
+    if player.ProfileStats.Level.Value >= 15 then
         local config = loadFromConfig() or {}
         config.usedCodes = config.usedCodes or {}
 
