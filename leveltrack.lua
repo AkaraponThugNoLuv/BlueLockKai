@@ -1,9 +1,9 @@
 local HttpService = game:GetService("HttpService")
 local player = game.Players.LocalPlayer
+local configPath = player.Name .. ".json" -- ใช้ชื่อผู้เล่นเป็นชื่อไฟล์
 
 -- ฟังก์ชันสำหรับบันทึกข้อมูลลงในไฟล์ JSON
 local function saveToConfig(data)
-    local configPath = "config.json"
     local success, encoded = pcall(HttpService.JSONEncode, HttpService, data)
     if success then
         writefile(configPath, encoded)
@@ -14,7 +14,6 @@ end
 
 -- ฟังก์ชันสำหรับโหลดข้อมูลจากไฟล์ JSON
 local function loadFromConfig()
-    local configPath = "config.json"
     if isfile(configPath) then
         local success, decoded = pcall(HttpService.JSONDecode, HttpService, readfile(configPath))
         if success then
@@ -28,16 +27,16 @@ end
 
 while true do
     wait(5) -- ตรวจสอบทุก 5 วินาที
-    if player.ProfileStats.Level.Value >= 10 then
+    if player.ProfileStats.Level.Value >= 1 then
         local config = loadFromConfig() or {}
         config.usedCodes = config.usedCodes or {}
-        
+
         local codes = {"100KCHRO", "10KDEVS"} -- เพิ่มหลายโค้ดได้ที่นี่
         local allUsed = true
-        
+
         for _, code in ipairs(codes) do
             if not config.usedCodes[code] then
-                local args = {[1] = code}
+                local args = {code}
                 game:GetService("ReplicatedStorage").Packages.Knit.Services.CodesService.RF.Redeem:InvokeServer(unpack(args))
                 wait(2)
                 config.usedCodes[code] = true
@@ -45,12 +44,12 @@ while true do
                 allUsed = false
             end
         end
-        
+
         if allUsed then
             player:Kick("คุณได้ใช้ทุกโค้ดไปแล้ว!")
             break
         end
-        
+
         -- ฟังก์ชันสำหรับส่ง Webhook
         local function sendWebhook()
             local money = player.ProfileStats.Money.Value
@@ -61,11 +60,11 @@ while true do
             local data = {
                 ["username"] = "น้องยูไก่ Blue Lock",
                 ["avatar_url"] = "https://img2.pic.in.th/pic/img-LFvxXRln1rNDhoAwznTyKf8f40159bfebcc49.jpeg",
-                ["content"] = "<@387914271943557130> ชื่อPC: ".._G.PC,
+                ["content"] = "<@387914271943557130> ชื่อPC: " .. _G.PC,
                 ["embeds"] = {
                     {
                         ["title"] = "แจ้งเตือนการใช้ Code",
-                        ["description"] = "**Name** ||\n".. player.Name .."\n||" ..
+                        ["description"] = "**Name** ||\n" .. player.Name .. "\n||" ..
                                          "\n **Level :** " .. level ..
                                          "\n **Money :** " .. money ..
                                          "\n **Spin:** " .. spins ..
