@@ -1737,6 +1737,7 @@ do
                             local Distance = (humanoidrootpart.Position - Target.Position).Magnitude
                             local Speed = 80
                             local Tween = TweenService:Create(humanoidrootpart, TweenInfo.new(Distance/Speed, Enum.EasingStyle.Linear), {CFrame = Target})
+                            if not NoClipConnect then
                             NoClipConnect = game:GetService("RunService").Stepped:Connect(noclip)
                             Tween:Play()
                             local ActionActive = Action or "None"
