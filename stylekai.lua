@@ -1,9 +1,9 @@
 local HttpService = game:GetService("HttpService")
 local player = game.Players.LocalPlayer
-local configPath = player.Name .. ".json" -- ใช้ชื่อผู้เล่นเป็นชื่อไฟล์
 
 -- ฟังก์ชันสำหรับบันทึกข้อมูลลงในไฟล์ JSON
 local function saveToConfig(data)
+    local configPath = "config.json"
     local success, encoded = pcall(HttpService.JSONEncode, HttpService, data)
     if success then
         writefile(configPath, encoded)
@@ -14,6 +14,7 @@ end
 
 -- ฟังก์ชันสำหรับโหลดข้อมูลจากไฟล์ JSON
 local function loadFromConfig()
+    local configPath = "config.json"
     if isfile(configPath) then
         local success, decoded = pcall(HttpService.JSONDecode, HttpService, readfile(configPath))
         if success then
@@ -34,11 +35,11 @@ local function sendWebhook(styleValue)
     local data = {
         ["username"] = "น้องยูไก่ Blue Lock",
         ["avatar_url"] = "https://img2.pic.in.th/pic/img-LFvxXRln1rNDhoAwznTyKf8f40159bfebcc49.jpeg",
-        ["content"] = "<@" .. "387914271943557130" .. "> ชื่อPC: ".._G.PC,  -- Tag ผู้เล่นใน Discord
+        ["content"] = "<@" .. "387914271943557130" .. "> ชื่อPC: " .. _G.PC,
         ["embeds"] = {
             {
                 ["title"] = "แจ้งเตือนสุ่ม Style",
-                ["description"] = "**Name** ||\n".. player.Name .."\n|| **Style : **" .. styleValue ..
+                ["description"] = "**Name** ||\n" .. player.Name .. "\n|| **Style : **" .. styleValue ..
                                  "\n **Money :** " .. money ..
                                  "\n **Spin:** : " .. spins ..
                                  "\n **FlowSpin:** : " .. flowSpins,
@@ -88,27 +89,20 @@ local function checkStyle()
         local styleValue = player.PlayerStats.Style.Value
         local styleneed = {"Sae","Yukimiya","Kunigami","Aiku","Shidou","Rin","Don Lorenzo"}
 
-        -- ตรวจสอบว่า styleValue เป็นค่าที่ต้องการหรือไม่
         if table.find(styleneed, styleValue) then
-            -- โหลดข้อมูลจากไฟล์ config
             local config = loadFromConfig() or {}
             local lastStyle = config.lastStyle
 
-            -- ถ้า styleValue เปลี่ยนและยังไม่เคยส่ง Webhook
             if lastStyle ~= styleValue then
-                -- บันทึกค่าใหม่ลงในไฟล์ config
                 config.lastStyle = styleValue
                 saveToConfig(config)
 
-                -- ส่ง Webhook
                 local success = sendWebhook(styleValue)
                 if success then
                     wait(45)
-                    -- เตะผู้เล่นหลังจากส่ง Webhook สำเร็จ
                     player:Kick("คุณได้รับสไตล์ " .. styleValue .. " แล้ว ")
                 end
             else
-                -- ถ้าเคยส่ง Webhook ไปแล้ว ให้เตะผู้เล่น
                 player:Kick("คุณได้รับสไตล์ " .. styleValue .. " แล้ว ")
             end
         end
