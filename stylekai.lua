@@ -1,9 +1,9 @@
 local HttpService = game:GetService("HttpService")
 local player = game.Players.LocalPlayer
 
--- ฟังก์ชันสำหรับบันทึกข้อมูลลงในไฟล์ JSON
+-- ฟังก์ชันสำหรับบันทึกข้อมูลลงในไฟล์ JSON โดยใช้ชื่อของผู้เล่น
 local function saveToConfig(data)
-    local configPath = "config.json"
+    local configPath = player.Name .. ".json"  -- เปลี่ยนเป็นชื่อตัวละคร
     local success, encoded = pcall(HttpService.JSONEncode, HttpService, data)
     if success then
         writefile(configPath, encoded)
@@ -14,7 +14,7 @@ end
 
 -- ฟังก์ชันสำหรับโหลดข้อมูลจากไฟล์ JSON
 local function loadFromConfig()
-    local configPath = "config.json"
+    local configPath = player.Name .. ".json"  -- เปลี่ยนเป็นชื่อตัวละคร
     if isfile(configPath) then
         local success, decoded = pcall(HttpService.JSONDecode, HttpService, readfile(configPath))
         if success then
@@ -87,7 +87,7 @@ end
 local function checkStyle()
     if player:FindFirstChild("PlayerStats") and player.PlayerStats:FindFirstChild("Style") then
         local styleValue = player.PlayerStats.Style.Value
-        local styleneed = {"Sae"}
+        local styleneed = {"Don Lorenzo","Shidou","Yukimiya","Sae","Kunigami","Rin","Aiku"}
 
         if table.find(styleneed, styleValue) then
             local config = loadFromConfig() or {}
@@ -99,7 +99,6 @@ local function checkStyle()
 
                 local success = sendWebhook(styleValue)
                 if success then
-                    wait(45)
                     player:Kick("คุณได้รับสไตล์ " .. styleValue .. " แล้ว ")
                 end
             else
