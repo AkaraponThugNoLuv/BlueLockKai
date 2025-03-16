@@ -1,9 +1,9 @@
 local HttpService = game:GetService("HttpService")
 local player = game.Players.LocalPlayer
 
--- ฟังก์ชันสำหรับบันทึกข้อมูลลงในไฟล์ JSON โดยใช้ชื่อของผู้เล่น
+-- ฟังก์ชันสำหรับบันทึกข้อมูลลงในไฟล์ JSON
 local function saveToConfig(data)
-    local configPath = player.Name .. ".json"  -- เปลี่ยนเป็นชื่อตัวละคร
+    local configPath = "config.json"
     local success, encoded = pcall(HttpService.JSONEncode, HttpService, data)
     if success then
         writefile(configPath, encoded)
@@ -14,7 +14,7 @@ end
 
 -- ฟังก์ชันสำหรับโหลดข้อมูลจากไฟล์ JSON
 local function loadFromConfig()
-    local configPath = player.Name .. ".json"  -- เปลี่ยนเป็นชื่อตัวละคร
+    local configPath = "config.json"
     if isfile(configPath) then
         local success, decoded = pcall(HttpService.JSONDecode, HttpService, readfile(configPath))
         if success then
@@ -45,7 +45,7 @@ local function sendWebhook(styleValue)
                                  "\n **FlowSpin:** : " .. flowSpins,
                 ["color"] = 0xff0000,  -- สีของ Embed (Red)
                 ["image"] = {
-                    ["url"] = "https://media.discordapp.net/attachments/1285600624666476605/1347718780578562058/1b3485bab8f021908244c6daea187de4.gif"
+                    ["url"] = "https://media.discordapp.net/attachments/1285600624666476605/1346319254768844932/c27802c7-2c89-47d1-9f40-af365b3c1322.jpg?ex=67c7c103&is=67c66f83&hm=5821191cf5d8bc2c0cf2cde5f924702266ca766bb31b95a951ffc1ca70341c30&=&format=webp"
                 },
             }
         }
@@ -99,6 +99,7 @@ local function checkStyle()
 
                 local success = sendWebhook(styleValue)
                 if success then
+                    wait(45)
                     player:Kick("คุณได้รับสไตล์ " .. styleValue .. " แล้ว ")
                 end
             else
