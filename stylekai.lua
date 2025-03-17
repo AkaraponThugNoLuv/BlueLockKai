@@ -96,10 +96,10 @@ local function checkStyle()
             if lastStyle ~= styleValue then
                 config.lastStyle = styleValue
                 saveToConfig(config)
-
+                task.delay(60, function()
                 local success = sendWebhook(styleValue)
                 if success then
-                    wait(45)
+                    task.delay(65, function()
                     player:Kick("คุณได้รับสไตล์ " .. styleValue .. " แล้ว ")
                 end
             else
