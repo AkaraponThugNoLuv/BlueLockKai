@@ -1,3 +1,4 @@
+wait(30)
 local HttpService = game:GetService("HttpService")
 local player = game.Players.LocalPlayer
 
@@ -96,10 +97,8 @@ local function checkStyle()
             if lastStyle ~= styleValue then
                 config.lastStyle = styleValue
                 saveToConfig(config)
-                task.delay(30, function()
                 local success = sendWebhook(styleValue)
                 if success then
-                    task.delay(35, function()
                     player:Kick("คุณได้รับสไตล์ " .. styleValue .. " แล้ว ")
                 end
             else
