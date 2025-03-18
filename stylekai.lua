@@ -98,6 +98,23 @@ local function spinUntilDesiredStyle()
     -- เช็คว่า Style ที่มีอยู่ตอนนี้เป็นหนึ่งในสไตล์ที่ต้องการแล้วหรือยัง
     if table.find(styleneed, styleValue.Value) then
         print("คุณมี Style ที่ต้องการอยู่แล้ว:", styleValue.Value)
+        
+        -- โหลด config เพื่อตรวจสอบว่ามีสไตล์นี้ถูกส่งไปยัง Webhook แล้วหรือยัง
+        local config = loadFromConfig() or {}
+        
+        -- ถ้ามีสไตล์นี้ใน config แล้วก็ไม่ต้องส่ง Webhook ซ้ำ
+        if config.lastStyle == styleValue.Value then
+            print("สไตล์นี้ถูกส่งแล้ว:", styleValue.Value)
+            return
+        end
+        
+        -- ถ้ายังไม่ส่ง Webhook ก็ทำการส่งและบันทึก
+        config.lastStyle = styleValue.Value
+        saveToConfig(config)
+
+        -- ส่ง Webhook
+        sendWebhook(styleValue.Value)
+
         player:Kick("คุณมีสไตล์ " .. styleValue.Value .. " อยู่แล้ว!")
         return
     end
