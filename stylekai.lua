@@ -105,7 +105,7 @@ local function spinUntilDesiredStyle()
     -- สุ่มจนกว่าจะได้สไตล์ที่ต้องการ
     while not table.find(styleneed, styleValue.Value) do
         spinService:FireServer()
-        task.wait(3) -- ลดเวลาให้สุ่มได้ไวขึ้น
+        task.wait(5) -- ลดเวลาให้สุ่มได้ไวขึ้น
     end
 
     -- บันทึกสไตล์ลง config.json
@@ -114,7 +114,7 @@ local function spinUntilDesiredStyle()
     saveToConfig(config)
 
     -- เพิ่มดีเลย์ก่อนส่ง Webhook
-    task.wait(2)  -- ดีเลย์ 2 วินาที
+    task.wait(10)  -- ดีเลย์ 2 วินาที
 
     -- ส่ง Webhook แจ้งเตือน
     sendWebhook(styleValue.Value)
