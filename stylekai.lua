@@ -95,16 +95,26 @@ local function spinUntilDesiredStyle()
     local styleValue = player.PlayerStats.Style
     local styleneed = {"Don Lorenzo", "Shidou", "Yukimiya", "Sae", "Kunigami", "Rin"}
 
+    -- เช็คว่า Style ที่มีอยู่ตอนนี้เป็นหนึ่งในสไตล์ที่ต้องการแล้วหรือยัง
+    if table.find(styleneed, styleValue.Value) then
+        print("คุณมี Style ที่ต้องการอยู่แล้ว:", styleValue.Value)
+        player:Kick("คุณมีสไตล์ " .. styleValue.Value .. " อยู่แล้ว!")
+        return
+    end
+
     -- สุ่มจนกว่าจะได้สไตล์ที่ต้องการ
     while not table.find(styleneed, styleValue.Value) do
         spinService:FireServer()
-        task.wait(5) -- ลดเวลาให้สุ่มได้ไวขึ้น
+        task.wait(3) -- ลดเวลาให้สุ่มได้ไวขึ้น
     end
 
     -- บันทึกสไตล์ลง config.json
     local config = loadFromConfig() or {}
     config.lastStyle = styleValue.Value
     saveToConfig(config)
+
+    -- เพิ่มดีเลย์ก่อนส่ง Webhook
+    task.wait(2)  -- ดีเลย์ 2 วินาที
 
     -- ส่ง Webhook แจ้งเตือน
     sendWebhook(styleValue.Value)
@@ -113,7 +123,7 @@ local function spinUntilDesiredStyle()
     player:Kick("คุณได้รับสไตล์ " .. styleValue.Value .. " แล้ว!")
 end
 
--- เรียกใช้ฟังก์ชันสุ่ม
+-- เรียกใช้ฟังก์ชันสุ่มทันทีเมื่อเข้าระบบ
 task.spawn(spinUntilDesiredStyle)
 
 -- ตรวจสอบทุกครั้งที่ Style เปลี่ยนแปลง
