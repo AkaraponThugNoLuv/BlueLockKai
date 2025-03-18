@@ -1,4 +1,3 @@
-wait(300)
 local HttpService = game:GetService("HttpService")
 local player = game.Players.LocalPlayer
 
