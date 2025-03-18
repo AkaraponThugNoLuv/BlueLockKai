@@ -1,9 +1,7 @@
 local HttpService = game:GetService("HttpService")
 local player = game.Players.LocalPlayer
-local replicatedStorage = game:GetService("ReplicatedStorage")
-local spinService = replicatedStorage.Packages.Knit.Services.StyleService.RE.Spin
 
--- ฟังก์ชันบันทึกข้อมูลลงไฟล์ JSON
+-- ฟังก์ชันสำหรับบันทึกข้อมูลลงในไฟล์ JSON
 local function saveToConfig(data)
     local configPath = "config.json"
     local success, encoded = pcall(HttpService.JSONEncode, HttpService, data)
@@ -14,7 +12,7 @@ local function saveToConfig(data)
     end
 end
 
--- ฟังก์ชันโหลดข้อมูลจากไฟล์ JSON
+-- ฟังก์ชันสำหรับโหลดข้อมูลจากไฟล์ JSON
 local function loadFromConfig()
     local configPath = "config.json"
     if isfile(configPath) then
@@ -28,7 +26,7 @@ local function loadFromConfig()
     return nil
 end
 
--- ฟังก์ชันส่ง Webhook
+-- ฟังก์ชันสำหรับส่ง Webhook
 local function sendWebhook(styleValue)
     local money = player.ProfileStats.Money.Value
     local spins = player.ProfileStats.Spins.Value
@@ -41,13 +39,13 @@ local function sendWebhook(styleValue)
         ["embeds"] = {
             {
                 ["title"] = "แจ้งเตือนสุ่ม Style",
-                ["description"] = "**Name** ||\n" .. player.Name .. "\n|| **Style : **" .. styleValue .. 
-                                 "\n **Money :** " .. money .. 
-                                 "\n **Spin:** " .. spins .. 
-                                 "\n **FlowSpin:** " .. flowSpins,
-                ["color"] = 0xff0000,  
+                ["description"] = "**Name** ||\n" .. player.Name .. "\n|| **Style : **" .. styleValue ..
+                                 "\n **Money :** " .. money ..
+                                 "\n **Spin:** : " .. spins ..
+                                 "\n **FlowSpin:** : " .. flowSpins,
+                ["color"] = 0xff0000,  -- สีของ Embed (Red)
                 ["image"] = {
-                    ["url"] = "https://media.discordapp.net/attachments/1285600624666476605/1346319254768844932/c27802c7-2c89-47d1-9f40-af365b3c1322.jpg"
+                    ["url"] = "https://media.discordapp.net/attachments/1285600624666476605/1346319254768844932/c27802c7-2c89-47d1-9f40-af365b3c1322.jpg?ex=67c7c103&is=67c66f83&hm=5821191cf5d8bc2c0cf2cde5f924702266ca766bb31b95a951ffc1ca70341c30&=&format=webp"
                 },
             }
         }
@@ -85,67 +83,36 @@ local function sendWebhook(styleValue)
     return success
 end
 
--- ฟังก์ชันสุ่ม Style ไปเรื่อย ๆ
-local function spinUntilDesiredStyle()
-    if not player:FindFirstChild("PlayerStats") or not player.PlayerStats:FindFirstChild("Style") then
-        warn("ไม่พบ PlayerStats หรือ Style")
-        return
-    end
+-- ตรวจสอบและดำเนินการ
+local function checkStyle()
+    if player:FindFirstChild("PlayerStats") and player.PlayerStats:FindFirstChild("Style") then
+        local styleValue = player.PlayerStats.Style.Value
+        local styleneed = {"Don Lorenzo", "Shidou", "Yukimiya", "Sae", "Kunigami", "Rin","Aiku"}
 
-    local styleValue = player.PlayerStats.Style
-    local styleneed = {"Don Lorenzo", "Shidou", "Yukimiya", "Sae", "Kunigami", "Rin"}
+        if table.find(styleneed, styleValue) then
+            local config = loadFromConfig() or {}
+            local lastStyle = config.lastStyle
 
-    -- เช็คว่า Style ที่มีอยู่ตอนนี้เป็นหนึ่งในสไตล์ที่ต้องการแล้วหรือยัง
-    if table.find(styleneed, styleValue.Value) then
-        print("คุณมี Style ที่ต้องการอยู่แล้ว:", styleValue.Value)
-        
-        -- โหลด config เพื่อตรวจสอบว่ามีสไตล์นี้ถูกส่งไปยัง Webhook แล้วหรือยัง
-        local config = loadFromConfig() or {}
-        
-        -- ถ้ามีสไตล์นี้ใน config แล้วก็ไม่ต้องส่ง Webhook ซ้ำ
-        if config.lastStyle == styleValue.Value then
-            print("สไตล์นี้ถูกส่งแล้ว:", styleValue.Value)
-            return
+            if lastStyle ~= styleValue then
+                config.lastStyle = styleValue
+                saveToConfig(config)
+
+                local success = sendWebhook(styleValue)
+                if success then
+                    wait(45)
+                    player:Kick("คุณได้รับสไตล์ " .. styleValue .. " แล้ว ")
+                end
+            else
+                player:Kick("คุณได้รับสไตล์ " .. styleValue .. " แล้ว ")
+            end
         end
-        
-        -- ถ้ายังไม่ส่ง Webhook ก็ทำการส่งและบันทึก
-        config.lastStyle = styleValue.Value
-        saveToConfig(config)
-
-        -- ส่ง Webhook
-        sendWebhook(styleValue.Value)
-
-        player:Kick("คุณมีสไตล์ " .. styleValue.Value .. " อยู่แล้ว!")
-        return
     end
-
-    -- สุ่มจนกว่าจะได้สไตล์ที่ต้องการ
-    while not table.find(styleneed, styleValue.Value) do
-        spinService:FireServer()
-        task.wait(5) -- ลดเวลาให้สุ่มได้ไวขึ้น
-    end
-
-    -- บันทึกสไตล์ลง config.json
-    local config = loadFromConfig() or {}
-    config.lastStyle = styleValue.Value
-    saveToConfig(config)
-
-    -- เพิ่มดีเลย์ก่อนส่ง Webhook
-    task.wait(10)  -- ดีเลย์ 2 วินาที
-
-    -- ส่ง Webhook แจ้งเตือน
-    sendWebhook(styleValue.Value)
-
-    -- เตะผู้เล่นออกจากเกม
-    player:Kick("คุณได้รับสไตล์ " .. styleValue.Value .. " แล้ว!")
 end
 
--- เรียกใช้ฟังก์ชันสุ่มทันทีเมื่อเข้าระบบ
-task.spawn(spinUntilDesiredStyle)
+-- เรียกฟังก์ชันตรวจสอบเมื่อเกมเริ่มต้น
+checkStyle()
 
 -- ตรวจสอบทุกครั้งที่ Style เปลี่ยนแปลง
 if player:FindFirstChild("PlayerStats") and player.PlayerStats:FindFirstChild("Style") then
-    player.PlayerStats.Style.Changed:Connect(function()
-        task.spawn(spinUntilDesiredStyle)
-    end)
+    player.PlayerStats.Style.Changed:Connect(checkStyle)
 end
