@@ -99,6 +99,7 @@ local function checkStyle()
 
                 local success = sendWebhook(styleValue)
                 if success then
+                    wait(2000)
                     player:Kick("คุณได้รับสไตล์ " .. styleValue .. " แล้ว ")
                 end
             else
