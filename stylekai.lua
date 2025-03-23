@@ -87,7 +87,7 @@ end
 local function checkStyle()
     if player:FindFirstChild("PlayerStats") and player.PlayerStats:FindFirstChild("Style") then
         local styleValue = player.PlayerStats.Style.Value
-        local styleneed = {"Don Lorenzo", "Shidou", "Yukimiya", "Sae", "Kunigami", "Rin","Aiku"}
+        local styleneed = {"Don Lorenzo", "Shidou", "Yukimiya", "Sae", "Kunigami", "Rin","Aiku","NEL Isagi"}
 
         if table.find(styleneed, styleValue) then
             local config = loadFromConfig() or {}
